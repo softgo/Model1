@@ -24,12 +24,7 @@
   <!-- 主题容器 --->  
  <div id="banner">
    <div id="banner1">
-      <div id="banner_left">
-      
-     <A href="http://www.zhongsou.com/" target=_blank><IMG
-				src="http://image.zhongsou.com/image/nzs_logo.gif" border=0></A>
-				
-       </div>
+    
       <div id="banner_midde"> </div>
 <form name="login" action="Login!login.<%=Constants.ActionExt%>" method="post">
 
@@ -64,14 +59,5 @@
    </div>
  </div>
  
-<div id="footer">
-  <div id="footer_an">
-    <div id="footer_an_right">  <span class="text2">
-	              	<font color=red>
-	              <strong>版权所有 中国搜索 	Copyright&copy; Zhongsou.com. All Rights Reserved
-	              </strong></font>
-	            　</span></div>
-  </div>
-</div>
 </body>
 </html>
