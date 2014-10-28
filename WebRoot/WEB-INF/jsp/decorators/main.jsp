@@ -244,10 +244,6 @@
 	}
 //-->
 </script>
-<div id="footer">
-  <div id="footer_an">
-    <div id="footer_an_right">Copyright© Zhongsou.com. All Rights Reserved <a href="http://www.zhongsou.com" target="_blank">中搜网络</a> 版权所有 </div>
-  </div>
-</div>
+
 </body>
 </html>
