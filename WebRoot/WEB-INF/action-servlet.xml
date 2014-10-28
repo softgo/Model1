@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+	<!-- cms管理系统 -->
+	
+	<bean id="LoginAction" class="com.bruce.gogo.system.action.LoginAction" scope="prototype" autowire="byName"></bean>
+	<bean id="UserPasswordAction" class="com.bruce.gogo.system.action.UserPasswordAction" scope="prototype" autowire="byName"></bean>
+	<bean id="PermissionAction" class="com.bruce.gogo.system.action.PermissionAction" scope="prototype" autowire="byName"></bean>
+	<bean id="RolePermissionAction" class="com.bruce.gogo.system.action.RolePermissionAction" scope="prototype" autowire="byName"></bean>
+	<bean id="UsersAction" class="com.bruce.gogo.system.action.UsersAction" scope="prototype" autowire="byName"></bean>
+	<bean id="DownLoadFile" class="com.bruce.gogo.utils.DownLoadFile" scope="prototype" autowire="byName"></bean>
+	
+</beans>
+
+

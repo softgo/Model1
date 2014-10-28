@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- Constants -->
+  <constant name="struts.objectFactory" value="spring"/>
+  <include file="struts-default.xml" />
+  <!-- Configuration for the default package. -->
+	<package name="person-default"  extends="struts-default">
+ 	<!-- 拦截器开始 -->
+ 	<!--  -->
+      <interceptors>
+		    <interceptor name="loginInterceptor" class="com.bruce.gogo.interceptor.LoginInterceptor"> </interceptor>		
+		    <interceptor name="permissionInterceptor" class="com.bruce.gogo.interceptor.PermissionInterceptor"> </interceptor>
+		    <interceptor name="menuInterceptor" class="com.bruce.gogo.interceptor.MenuInterceptor"> </interceptor>		
+			<interceptor-stack name="myDefaultStack">
+			      <interceptor-ref name="defaultStack"></interceptor-ref>	
+			      <interceptor-ref name="menuInterceptor"></interceptor-ref> 
+				  <interceptor-ref name="permissionInterceptor"></interceptor-ref>
+	 		      <interceptor-ref name="loginInterceptor"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myDefaultStack"></default-interceptor-ref>
+ 	
+  		<!-- 拦截器结束 -->
+		<global-results>
+			<result name="Error">/WEB-INF/jsp/common/Error.jsp</result>
+			<result name="ajaxjson">/WEB-INF/jsp/system/ajaxjson.jsp</result>
+			<result name="Logout" type="redirectAction">Login!showLogin</result>
+			<result name="testmempage">/WEB-INF/jsp/test.jsp</result>
+			<result name="Ajaxjsp">/WEB-INF/jsp/common/Ajaxjsp.jsp</result>
+			<result name="Messagejsp">/WEB-INF/jsp/include/message.jsp</result>
+			<result name="PermissionErrorPage">/WEB-INF/jsp/common/PermissionErrorPage.jsp</result>
+		</global-results>
+	</package>	
+
+  <!-- Add additional actions here -->  	
+  <!-- 系统模块包 如：用户管理，权限管理，登录退出等等系统功能 -->
+	<package name="system"  extends="person-default">
+		<action name="Login" class="LoginAction">
+			<result name="View">/WEB-INF/jsp/system/login/login.jsp</result>
+			<result name="Login" type="redirectAction">Login!welcome</result>
+			<result name="Logout" type="redirectAction">Login!showLogin?error=${error}&amp;username=${username}</result>
+			<result name="Welcome">/WEB-INF/jsp/system/login/welcome.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="UserPassword" class="UserPasswordAction">
+			<result name="UserPassword">/WEB-INF/jsp/system/userpassword/UserPassword.jsp</result>	
+			<result name="UserSave" type="redirectAction">Users!userlist</result>	
+			<result name="Save" type="redirectAction">Users!list</result>			
+		</action>
+		<action name="Permission" class="PermissionAction">				
+			<result name="List">/WEB-INF/jsp/system/permission/List.jsp</result>			
+			<result name="Add">/WEB-INF/jsp/system/permission/Add.jsp</result>
+		    <result name="Edit">/WEB-INF/jsp/system/permission/Edit.jsp</result>
+		    <result name="Save" type="redirectAction">Permission!list</result>			     		    
+		</action>
+		<action name="RolePermission" class="RolePermissionAction">
+			<result name="List">/WEB-INF/jsp/system/rolepermission/List.jsp</result>
+			<result name="Edit">/WEB-INF/jsp/system/rolepermission/Edit.jsp</result>
+			<result name="Add">/WEB-INF/jsp/system/rolepermission/Add.jsp</result>				
+		    <result name="Save" type="redirectAction">RolePermission!list</result>			   
+	     </action>
+		<action name="Users" class="UsersAction">
+			<result name="List">/WEB-INF/jsp/system/users/List.jsp</result>
+			<result name="UserList">/WEB-INF/jsp/system/users/UserList.jsp</result>
+			<result name="Edit">/WEB-INF/jsp/system/users/Edit.jsp</result>
+			<result name="Add">/WEB-INF/jsp/system/users/Add.jsp</result>
+			<result name="RoleSet">/WEB-INF/jsp/system/users/UserRoleSet.jsp</result>		
+			<result name="UserSave" type="redirectAction">Users!userlist</result>			
+		    <result name="Save" type="redirectAction">Users!list</result>		
+	     </action>
+	    <action name="downloadfile" class="DownLoadFile"> 
+         <result name="success" type="stream"> 
+          <param name="contentDisposition">attachment;filename=${downloadFileName}</param>  
+          <param name="inputName">inputStream</param> 
+         </result> 
+         </action>
+
+	</package>
+
+</struts>

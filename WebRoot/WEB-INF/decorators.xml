@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<decorators defaultdir="/WEB-INF/jsp/decorators">
+	<excludes>
+		<pattern>/index.jsp</pattern>
+		<pattern>/help.html</pattern>
+	</excludes>
+  <decorator name="null">
+		
+	    <pattern>/Login!showLogin.*</pattern>
+	    <pattern>/RolePermission!checkname.*</pattern>
+		<pattern>/RolePermission!delete.*</pattern>	
+		<pattern>/Permission!checkname.*</pattern>		
+		<pattern>/Permission!delete.*</pattern>
+		<pattern>/Users!checkname.*</pattern>
+		<pattern>/Users!delete.*</pattern>
+		<pattern>/UserPassword!check.*</pattern>
+	    <pattern>/Users!restorePassword.*</pattern>
+		
+	</decorator> 
+	<decorator name="main" page="main.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+</decorators>

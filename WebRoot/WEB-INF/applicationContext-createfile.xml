@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+    <!-- 每天定时从日志文件recvAppLog.dat读取应用搜索日志信息 -->
+    <!-- 
+    <bean id="awardJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+          <property name="jobClass" value="com.zhongsou.server.AwardJob"/>
+    </bean>
+    <bean id="awardJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="awardJob"/>
+           <property name="cronExpression" value="0 55 09 * * ?"/>    
+    </bean>
+     -->
+    <!-- 日志每天凌晨4点读取 -->
+    
+
+    <bean id="awardJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+          <property name="jobClass" value="com.zhongsou.server.AwardJob"/>
+    </bean>
+    <bean id="awardJobTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="awardJob"/>
+		
+    </bean>
+    
+    
+    <!--任务的计划工厂-->
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+            <!-- 
+            	<ref bean="awardJobTrigger" />
+             -->
+            </list>
+        </property>
+    </bean>
+</beans>
+
+
+
+
+
+
+
+
+
+
+

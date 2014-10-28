@@ -1,0 +1,99 @@
+/*--------------公共样式-------------*/
+*{margin:0px;padding: 0px;}
+body {width:100%;overflow:hidden;
+	font-family: Verdana, Arial, Helvetica, sans-serif, "宋体";
+	font-size: 12px;
+	color: #333333;
+	text-align: center;
+	background:#0268cc url(../images/al1.gif) repeat-y  center top;
+}
+img {border: 0px;}
+a {color:#333333;text-decoration: none;}
+a:link, a:visited {color: #333333;}
+a:hover, a:active {color: #ff5400;}
+
+/*--------------公共头部样式--------------*/
+#header {
+	height: 55px;
+	width: 100%;
+	background-color: #0268cc;
+}
+
+/*--------------banner--------------*/
+#banner1{padding-top: 80px;width:750px;margin:0 auto;overflow:hidden;}
+#banner{width:100%;overflow:hidden;position:absolute;left:0;
+	background-image: url(../images/al3.jpg);
+	background-repeat: repeat-x;
+	height: 490px;
+}
+#banner_left{
+	background-image: url(../images/al6.jpg);
+	height: 114px;
+	width: 280px;
+	float: left;
+	background-position: right;
+	background-repeat: no-repeat;
+	margin-top: 90px;
+	margin-right: 20px;
+}
+#banner_midde{
+	background-image: url(../images/al7.gif);
+	height: 291px;
+	width: 5px;
+	float: left;
+}
+#banner_right{
+	float: left;
+	line-height: 40px;
+	margin-top: 90px;
+	margin-left: 30px;
+
+}
+/*--------------头部快速链接样-------------*/
+#subNav {height: 55px;background-image: url(../images/al.gif);background-repeat: repeat-y;text-align:left;}
+
+ #subNav_nav
+{
+	float:left;
+	width:292px;
+	height: 54px;
+	text-align:center;
+	background-image: url(../images/al4.jpg);
+	background-repeat: no-repeat;
+	background-position: left;
+}
+#subNav_nav1
+{position:absolute;right:0;
+	text-align:center;
+	margin-top: 15px;
+	margin-right: 0px;
+	margin-bottom: 20px;
+	color: #FFFFFF; 
+}
+#subNav_nav1 a:link, a:visited {color: #ffffff;}
+#subNav_nav1 a:hover, a:active {color: #ffffff;}
+
+
+/*------------内容区左侧主体样-----------*/
+#container #left_container {float: left;width: 980px;}
+
+
+
+/*------------页脚------------*/
+#footer{	position:absolute;top:550px;left:0;height: 60px;width:100%;}
+#footer_an{
+	height: 60px;
+	margin:0 auto;
+	font-size: 12px;
+	color: #3c3c3c;
+	/*background-image: url(../images/al1.gif);
+	background-repeat: repeat-y;*/
+}
+#footer_an_left{
+    width:200px;
+	float:left;
+}
+#footer_an_right{
+	color: #FFFFFF;
+	padding:10px;
+}

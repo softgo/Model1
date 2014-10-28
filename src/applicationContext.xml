@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:jdbc.properties</value>
+		</property>
+	</bean>
+	
+	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
+	
+	<!--  when close is called, should we force transactions to terminate or not? -->
+	<property name="forceShutdown"><value>true</value></property>
+	</bean>
+
+	<!-- Also use Atomikos UserTransactionImp, needed to configure Spring  --> 
+	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+		<property name="transactionTimeout">  
+             <value>120000</value>  
+       </property>  
+	</bean>
+
+	<!-- Configure the Spring framework to use JTA transactions from Atomikos -->
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+	
+		<property name="transactionManager"><ref bean="atomikosTransactionManager"  /></property>
+		<property name="userTransaction"><ref bean="atomikosUserTransaction"  /></property>
+	</bean>
+	
+	<bean id="dataSourceA" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="username" value="${datasource.username}"/>
+		<property name="password" value="${datasource.password}"/>
+		<property name="url" value="${datasource.url}"/>
+		<property name="driverClassName" value="${datasource.driverClassName}"/>
+		<property name="maxActive" value="${datasource.maxActive}"/>
+		<property name="maxIdle" value="${datasource.maxIdle}"/>
+		<property name="maxWait" value="${datasource.maxWait}"/>
+		<property name="validationQuery" value="${datasource.validationQuery}"/> 
+		
+		<property name="removeAbandoned" value="false"/>
+		<property name="removeAbandonedTimeout" value="120000"/>
+		<property name="logAbandoned" value="false"/>
+	</bean>
+	
+	<!-- 配置sessionFactory, 注意这里引入的包的不同  -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+
+		<!-- 映射资源文件  -->
+		<property name="mappingResources">
+			<list>
+				<value>com/bruce/gogo/system/model/Userinfo.hbm.xml</value>	
+	            <value>com/bruce/gogo/system/model/Stmkinfo.hbm.xml</value>	
+	            <value>com/bruce/gogo/system/model/Modleinfo.hbm.xml</value>	
+	            <value>com/bruce/gogo/system/model/Userroleinfo.hbm.xml</value>	
+                <value>com/bruce/gogo/system/model/Userloginfo.hbm.xml</value>
+                <!-- New add -->
+              
+		    </list>
+		</property>
+		<property name="dataSource">
+			<ref local="dataSourceA" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop>
+				<prop key="hibernate.query.factory_class">org.hibernate.hql.ast.ASTQueryTranslatorFactory</prop><!-- hibernate3 批量更新、删除时必须用这个配置 -->
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+				<prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
+				<prop key="hibernate.connection.release_mode">${hibernate.connection.release_mode}</prop>
+				<!--<prop key="hibernate.cache.use_second_level_cache">false</prop>-->
+				
+			</props>
+		</property>
+		
+	</bean>
+
+	<!-- 配置sessionFactory, 注意这里引入的包的不同  -->
+	
+	<bean id="ajaxMessagesJson" class="com.bruce.gogo.utils.AjaxMessagesJson" scope="prototype"/>	
+	<bean id="ajaxmessagesjsonarray" class="com.bruce.gogo.utils.AjaxMessagesJsonArray" scope="prototype"/>
+ 
+	<bean id="daoA" class="com.bruce.gogo.common.service.impl.CommonDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>		
+	</bean>
+	
+	<!-- 配置第二道数据源参与试用.
+	
+   <bean id="dataSourceB" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="username" value="${videosearch.datasource.username}"/>
+		<property name="password" value="${videosearch.datasource.password}"/>
+		<property name="url" value="${videosearch.datasource.url}"/>
+		<property name="driverClassName" value="${datasource.driverClassName}"/>
+		<property name="maxActive" value="${datasource.maxActive}"/>
+		<property name="maxIdle" value="${datasource.maxIdle}"/>
+		<property name="maxWait" value="${datasource.maxWait}"/>
+		<property name="validationQuery" value="${datasource.validationQuery}"/> 
+		
+		<property name="removeAbandoned" value="false"/>
+		<property name="removeAbandonedTimeout" value="120000"/>
+		<property name="logAbandoned" value="false"/>
+	</bean>
+	
+	<bean id="sessionFactory2" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="mappingResources">
+			<list>
+                <value>com/burce/gogo/common/model/Demo.hbm.xml</value>
+		    </list>
+		</property>
+		<property name="dataSource">
+			<ref local="dataSourceB" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop>
+				<prop key="hibernate.query.factory_class">org.hibernate.hql.ast.ASTQueryTranslatorFactory</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+				<prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
+				<prop key="hibernate.connection.release_mode">${hibernate.connection.release_mode}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="daoB" class="com.bruce.gogo.common.service.impl.CommonDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory2" />
+		</property>		
+	</bean>
+	-->
+	
+	
+	<bean id="txProxyTemplate" abstract="true" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">    
+	    <property name="transactionManager">  
+	        <ref bean="transactionManager"/>  
+	    </property>    
+	    <property name="transactionAttributes">    
+	        <props>  
+			    <prop key="save*">PROPAGATION_REQUIRED</prop>
+			    <prop key="remove*">PROPAGATION_REQUIRED</prop>
+			    <prop key="update*">PROPAGATION_REQUIRED</prop>
+			    <prop key="create*">PROPAGATION_REQUIRED</prop>
+			    <prop key="add*">PROPAGATION_REQUIRED</prop>
+			    <prop key="del*">PROPAGATION_REQUIRED</prop>
+			    <prop key="clear*">PROPAGATION_REQUIRED</prop>
+			    <prop key="build*">PROPAGATION_REQUIRED</prop>
+				<prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+    			<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+    			<prop key="com*">readOnly</prop>
+	        </props>    
+	    </property>    
+	</bean>
+
+   <!--  begin -->
+	<bean id="loginService" parent="txProxyTemplate">
+		<property name="target">    
+	  	<bean class="com.bruce.gogo.system.service.impl.LoginImpl">  
+				<property name="daoA"><ref bean="daoA" /></property>
+		</bean>    
+	  </property>
+	</bean>
+	
+	<bean id="userPasswordService" parent="txProxyTemplate">
+		<property name="target">    
+	  	<bean class="com.bruce.gogo.system.service.impl.UserPasswordImpl">  
+				<property name="daoA"><ref bean="daoA" /></property>
+		</bean>    
+	  </property>
+	</bean>
+	
+	<bean id="permissionService" parent="txProxyTemplate">
+		<property name="target">
+			<bean class="com.bruce.gogo.system.service.impl.PermissionImpl">	
+				<property name="daoA"><ref bean="daoA"/></property>						
+			</bean>
+		</property>		
+	</bean>
+	
+	<bean id="rolePermissionService" parent="txProxyTemplate">
+		<property name="target">
+			  	<bean class="com.bruce.gogo.system.service.impl.RolePermissionImpl">
+				<property name="daoA"><ref bean="daoA"/></property>
+					
+			</bean>
+		</property>		
+	</bean>
+	
+	<bean id="usersService" parent="txProxyTemplate">
+		<property name="target">
+			  	<bean class="com.bruce.gogo.system.service.impl.UsersImpl">
+				<property name="daoA"><ref bean="daoA"/></property>
+					
+			</bean>
+		</property>		
+	</bean>
+	
+	<!-- end -->
+	<bean id="md5" class="com.bruce.gogo.crypt.impl.MD5Imp" scope="prototype"></bean>
+		
+	<!-- Threads -->
+	<!-- 部署到tomcat时放开开启的线程池.--> 
+	<bean id="myServerThread" parent="txProxyTemplate">
+		<property name="target">
+			  	<bean class="com.bruce.gogo.socket.utils.PersonaeServer" init-method="initRevc">
+			</bean>
+		</property>
+	</bean>
+	 
+</beans>
